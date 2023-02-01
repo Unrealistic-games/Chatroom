@@ -1,8 +1,11 @@
 <div id="chatRoom">
   <div id="messages"></div>
-  <input type="text" id="messageInput">
-  <button id="sendButton">Send</button>
+  <form id="form">
+    <input type="text" id="messageInput" required>
+    <button id="sendButton">Send</button>
+  </form>
 </div>
+
 <style>
 #chatRoom {
   width: 500px;
@@ -17,8 +20,14 @@
   margin-bottom: 10px;
 }
 
+#form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #messageInput {
-  width: calc(100% - 80px);
+  width: calc(100% - 90px);
   padding: 5px;
   margin-right: 10px;
 }
@@ -28,11 +37,13 @@
 const messagesDiv = document.getElementById("messages");
 const messageInput = document.getElementById("messageInput");
 const sendButton = document.getElementById("sendButton");
+const form = document.getElementById("form");
 
-sendButton.addEventListener("click", function() {
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+
   const message = messageInput.value;
-  messagesDiv.innerHTML += "<div>" + message + "</div>";
+  messagesDiv.innerHTML += `<div>${message}</div>`;
   messageInput.value = "";
 });
-
 </script>
