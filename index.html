@@ -1,13 +1,15 @@
 <div id="chatRoom">
   <div id="messages"></div>
-  <form id="form">
-    <input type="text" id="messageInput" required>
+  <div id="inputArea">
+    <input type="text" id="messageInput">
     <button id="sendButton">Send</button>
-  </form>
+  </div>
+  <div id="userList"></div>
 </div>
-
 <style>
 #chatRoom {
+  display: flex;
+  flex-direction: row;
   width: 500px;
   height: 300px;
   border: 1px solid black;
@@ -15,35 +17,70 @@
 }
 
 #messages {
+  flex: 3;
   height: 250px;
   overflow: auto;
-  margin-bottom: 10px;
-}
-
-#form {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#messageInput {
-  width: calc(100% - 90px);
-  padding: 5px;
   margin-right: 10px;
 }
 
+#inputArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#messageInput {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#userList {
+  flex: 1;
+  height: 250px;
+  overflow: auto;
+  border-left: 1px solid black;
+  padding-left: 10px;
+}
 </style>
 <script>
 const messagesDiv = document.getElementById("messages");
 const messageInput = document.getElementById("messageInput");
 const sendButton = document.getElementById("sendButton");
-const form = document.getElementById("form");
+const userList = document.getElementById("userList");
 
-form.addEventListener("submit", function(event) {
-  event.preventDefault();
+const users = [];
 
+sendButton.addEventListener("click", function() {
   const message = messageInput.value;
-  messagesDiv.innerHTML += `<div>${message}</div>`;
+  messagesDiv.innerHTML += "<div>" + message + "</div>";
   messageInput.value = "";
 });
+
+messageInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    sendButton.click();
+  }
+});
+
+function addUser(username) {
+  users.push(username);
+  updateUserList();
+}
+
+function removeUser(username) {
+  const index = users.indexOf(username);
+  if (index > -1) {
+    users.splice(index, 1);
+  }
+  updateUserList();
+}
+
+function updateUserList() {
+  userList.innerHTML = "";
+  for (const username of users) {
+    userList.innerHTML += "<div>" + username + "</div>";
+  }
+}
 </script>
